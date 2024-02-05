@@ -1,0 +1,44 @@
+#!/usr/bin/python3
+""" define database models """
+
+from . import db
+from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy.orm import relationship
+
+
+class User(db.Model):
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String(64))
+    last_name = Column(String(64))
+    email = Column(String(120), unique=True)
+    phone_number = Column(String(13))
+    password_hash = Column(String(256))
+
+    products = relationship("Product", back_populates="user")
+    bids = relationship("Bids", back_populates="user")
+
+
+class Bids(db.Model):
+    id = Column(Integer, primary_key=True)
+    price = Column(Integer)
+    accepted = Column(Boolean, default=False)
+    product_id = Column(Integer, ForeignKey("product.id"))
+    user_id = Column(Integer, ForeignKey("user.id"))
+
+    product = relationship("Product", back_populates="bids")
+    user = relationship("User", back_populates="bids")
+
+
+class Product(db.Model):
+    id = Column(Integer, primary_key=True)
+    product_name = Column(String(120))
+    quantity = Column(String(256))
+    user_id = Column(Integer, ForeignKey("user.id"))
+
+    user = relationship("User", back_populates="product")
+
+
+User.products = relationship("Product", back_populates="user")
+User.bids = relationship("Bids", back_populates="user")
+Bids.user = relationship("User", back_populates="bids")
+Bids.product = relationship("Product", back_populates="bids")
