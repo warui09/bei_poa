@@ -17,6 +17,9 @@ class User(db.Model):
     products = relationship("Product", back_populates="user")
     bids = relationship("Bids", back_populates="user")
 
+    def __repr__(self):
+        return f"<User {self.first_name} {self.last_name} {self.email}>"
+
 
 class Bids(db.Model):
     id = Column(Integer, primary_key=True)
@@ -28,6 +31,9 @@ class Bids(db.Model):
     product = relationship("Product", back_populates="bids")
     user = relationship("User", back_populates="bids")
 
+    def __repr__(self):
+        return f"<Bids {self.id} {self.price}>"
+
 
 class Product(db.Model):
     id = Column(Integer, primary_key=True)
@@ -36,6 +42,9 @@ class Product(db.Model):
     user_id = Column(Integer, ForeignKey("user.id"))
 
     user = relationship("User", back_populates="product")
+
+    def __repr__(self):
+        return f"<Product {self.id} {self.product_name} {self.quantity}>"
 
 
 User.products = relationship("Product", back_populates="user")

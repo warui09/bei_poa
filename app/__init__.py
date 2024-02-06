@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ initialize and set up the app """
 
-from config import Config
-from extensions import db
+from .config import Config
+from .extensions import db
 from flask import Flask
 
 
