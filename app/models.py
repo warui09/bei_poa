@@ -8,10 +8,10 @@ from sqlalchemy.orm import relationship
 
 class User(db.Model):
     id = Column(Integer, primary_key=True)
-    first_name = Column(String(64))
-    last_name = Column(String(64))
-    email = Column(String(120), unique=True)
-    phone_number = Column(String(13))
+    first_name = Column(String(64), nullable=False)
+    last_name = Column(String(64), nullable=False)
+    email = Column(String(120), unique=True, nullable=False)
+    phone_number = Column(String(13), nullable=False)
     password_hash = Column(String(256))
 
     products = relationship("Product", back_populates="user")
@@ -23,7 +23,7 @@ class User(db.Model):
 
 class Bids(db.Model):
     id = Column(Integer, primary_key=True)
-    price = Column(Integer)
+    price = Column(Integer, nullable=False)
     accepted = Column(Boolean, default=False)
     product_id = Column(Integer, ForeignKey("product.id"))
     user_id = Column(Integer, ForeignKey("user.id"))
@@ -37,8 +37,8 @@ class Bids(db.Model):
 
 class Product(db.Model):
     id = Column(Integer, primary_key=True)
-    product_name = Column(String(120))
-    quantity = Column(String(256))
+    product_name = Column(String(120), nullable=False)
+    quantity = Column(String(256), nullable=False)
     user_id = Column(Integer, ForeignKey("user.id"))
 
     user = relationship("User", back_populates="product")
