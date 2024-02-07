@@ -48,7 +48,5 @@ class Product(db.Model):
         return f"<Product {self.id} {self.product_name} {self.quantity}>"
 
 """ persist the tables """
-if __name__ == "__main__":
-    from sqlalchemy import create_engine
-    engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
-    db.metadata.create_all(engine)
+with app.app_context():
+    db.create_all
