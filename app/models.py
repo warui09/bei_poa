@@ -2,8 +2,9 @@
 """ define database models """
 
 from . import db
+from .config import Config
 from sqlalchemy import Boolean, Column, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, backref
 
 
 class User(db.Model):
@@ -14,8 +15,8 @@ class User(db.Model):
     phone_number = Column(String(13), nullable=False)
     password_hash = Column(String(256))
 
-    products = relationship("Product", back_populates="user")
-    bids = relationship("Bids", back_populates="user")
+    products = relationship("Product", backref="user")
+    bids = relationship("Bids", backref="user")
 
     def __repr__(self):
         return f"<User {self.first_name} {self.last_name} {self.email}>"
@@ -28,8 +29,8 @@ class Bids(db.Model):
     product_id = Column(Integer, ForeignKey("product.id"))
     user_id = Column(Integer, ForeignKey("user.id"))
 
-    product = relationship("Product", back_populates="bids")
-    user = relationship("User", back_populates="bids")
+    product = relationship("Product", backref="bids")
+    user = relationship("User", backref="bids")
 
     def __repr__(self):
         return f"<Bids {self.id} {self.price}>"
@@ -41,13 +42,13 @@ class Product(db.Model):
     quantity = Column(String(256), nullable=False)
     user_id = Column(Integer, ForeignKey("user.id"))
 
-    user = relationship("User", back_populates="product")
+    user = relationship("User", backref="product")
 
     def __repr__(self):
         return f"<Product {self.id} {self.product_name} {self.quantity}>"
 
-
-User.products = relationship("Product", back_populates="user")
-User.bids = relationship("Bids", back_populates="user")
-Bids.user = relationship("User", back_populates="bids")
-Bids.product = relationship("Product", back_populates="bids")
+""" persist the tables """
+if __name__ == "__main__":
+    from sqlalchemy import create_engine
+    engine = create_engine(Config.SQLALCHEMY_DATABASE_URI)
+    db.metadata.create_all(engine)
