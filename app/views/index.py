@@ -3,8 +3,8 @@
 
 from flask import Blueprint, current_app
 
-index = Blueprint("index", __name__)
+index_bp = Blueprint("index", __name__)
 
-@index.route("/")
+@index_bp.route("/", strict_slashes=False)
 def home_page():
     return "Hello"
