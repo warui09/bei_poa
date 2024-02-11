@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block body %}
+    {{ super() }}
+
+    <form method="POST">
+	    {{ render_form(form) }}
+    </form>
+{% endblock %}
