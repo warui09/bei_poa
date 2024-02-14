@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+<title>Home</title>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center">
+	{% for product in products %}
+	<div class="d-inline-block w-auto">
+	<div class="card m-1" style="width: 18rem;">
+	    <img class="card-img-top" src={{ product.image_url }} alt="Card image cap">
+	    <div class="card-body">
+	        <h5 class="card-title">{{ product.product_name }}</h5>
+	        <p class="card-text">Quantity: {{ product.quantity }} bags</p>
+	        <a href="#" class="btn btn-primary">Bid</a>
+	    </div>
+	</div>
+	</div>
+	{% endfor %}
+    
+</div>
+{% endblock %}
