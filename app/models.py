@@ -1,52 +1,62 @@
 #!/usr/bin/python3
 """ define database models """
 
-from . import db
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
+from werkzeug.security import check_password_hash
 from .config import Config
-from sqlalchemy import Boolean, Column, Integer, String
-from sqlalchemy.orm import relationship, backref
+from flask_login import UserMixin
 
+Base = declarative_base()
 
-class User(db.Model):
-    id = Column(Integer, primary_key=True)
-    first_name = Column(String(64), nullable=False)
-    last_name = Column(String(64), nullable=False)
-    email = Column(String(120), unique=True, nullable=False)
+class User(UserMixin, Base):
+    __tablename__ = 'user'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    first_name = Column(String(64), nullable=False, index=True)
+    last_name = Column(String(64), nullable=False, index=True)
+    email = Column(String(120), nullable=False, unique=True, index=True)
     phone_number = Column(String(13), nullable=False)
-    password_hash = Column(String(256))
+    password_hash = Column(String(256), nullable=False)
 
-    products = relationship("Product", backref="user")
-    bids = relationship("Bids", backref="user")
+    products = relationship("Product", back_populates="owner")
+    bids = relationship("Bids", back_populates="bidder")
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    def is_active(self):
+        # Return True if the user is active, False otherwise
+        return True
 
     def __repr__(self):
         return f"<User {self.first_name} {self.last_name} {self.email}>"
 
-
-class Bids(db.Model):
-    id = Column(Integer, primary_key=True)
+class Bids(Base):
+    __tablename__ = 'bids'
+    id = Column(Integer, primary_key=True, autoincrement=True)
     price = Column(Integer, nullable=False)
     accepted = Column(Boolean, default=False)
     product_id = Column(Integer, ForeignKey("product.id"))
     user_id = Column(Integer, ForeignKey("user.id"))
 
-    product = relationship("Product", backref="bids")
-    user = relationship("User", backref="bids")
+    product = relationship("Product", back_populates="bids")
+    bidder = relationship("User", back_populates="bids")
 
     def __repr__(self):
         return f"<Bids {self.id} {self.price}>"
 
-
-class Product(db.Model):
-    id = Column(Integer, primary_key=True)
-    product_name = Column(String(120), nullable=False)
+class Product(Base):
+    __tablename__ = 'product'
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    product_name = Column(String(120), nullable=False, index=True)
     quantity = Column(String(256), nullable=False)
+    image_url = Column(String(256))
+    place = Column(String(256))
     user_id = Column(Integer, ForeignKey("user.id"))
 
-    user = relationship("User", backref="product")
+    owner = relationship("User", back_populates="products")
+    bids = relationship("Bids", back_populates="product")
 
     def __repr__(self):
         return f"<Product {self.id} {self.product_name} {self.quantity}>"
-
-""" persist the tables """
-with app.app_context():
-    db.create_all

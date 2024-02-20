@@ -5,8 +5,12 @@
 {% endblock %}
 
 {% block content %}
-<div class="m-1" style="text-align: center">
-    <h1 display="inline-block">Listed Products</h1>
+<div class="mx-auto my-3" style="width: 50%;">
+    <!-- remember to change form action once search logic is done -->
+    <form action="{{ url_for('auth.sign_in') }}" method="GET" class="d-flex">
+        <input type="text" name="query" class="form-control me-2" placeholder="Search products...">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
 </div>
 <div>
     <div class="mx-auto" style="width: 90%">
@@ -17,7 +21,8 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ product.product_name }}</h5>
                     <p class="card-text">Quantity: {{ product.quantity }} bags</p>
-                    <a href="#" class="btn btn-primary">Bid</a>
+		    <p class="card-text">Place: {{ product.place }}</p>
+                    <a href= "{{ url_for('Product_bid.bid', product_id=product.id) }}" class="btn btn-primary">Bid</a>
                 </div>
             </div>
         </div>

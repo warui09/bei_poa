@@ -49,9 +49,8 @@ def sign_up():
             db.session.add(new_user)
             db.session.commit()
 
-            return f"first_name: {form.first_name.data}, last_name: {form.last_name.data}"
 
         # redirect user to index page
-        #return redirect(url_for("index.home_page"))
+        return redirect(url_for("index.home_page"))
 
     return render_template("sign_up.html", form=form, csrf_token=generate_csrf())

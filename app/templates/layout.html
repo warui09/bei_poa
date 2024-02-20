@@ -5,6 +5,9 @@
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	<!-- Include jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
         {% block styles %}
             <!-- Bootstrap CSS -->
@@ -12,6 +15,7 @@
         {% endblock %}
 
 	{% block title %}{% endblock %}
+	{% block script %}{% endblock %}
         {% endblock %}
     </head>
     <body>
@@ -30,8 +34,11 @@
 		</button>
 	    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 	    <div class="navbar-nav">
-	    <a class="nav-link active" aria-current="page" href="#">Home</a>
-	    <a class="nav-link" href="#">Features</a>
+	    {% block navbar_links %}
+	        <a class="nav-link active" aria-current="page" href="#">Home</a>
+	        <a class="nav-link" href="#">Features</a>
+	    {% endblock %}
+	    {% block navbar_user_name %}{% endblock %}
       </div>
     </div>
   </div>

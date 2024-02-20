@@ -5,13 +5,17 @@
 <title>Sign up</title>
 {% endblock %}
 
+{% block script %}
+<script src="../static/sign_up.js"></script>
+{% endblock %}
+
 {% block content %}
     {{ super() }}
     <div style="text-align: center">
         <h1 display="inline-block">Bei Poa</h1>
     </div>
     <div style="width: 70%; margin: 0 auto">
-	<form method="POST">
+	<form id="sign-up-form" method="POST" action="/sign_up">
 	    {{ render_form(form) }}
 	</form>
     </div>

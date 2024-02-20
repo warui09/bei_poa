@@ -1,0 +1,22 @@
+{% extends "index.html" %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='sign_up.js') }}"></script>
+{% endblock %}
+
+{% block navbar_links %}
+<a class="nav-link active" aria-current="page" href="{{ url_for('user_products.user_products') }}">Your products</a>
+<a class="nav-link active" href="{{ url_for('user_bids.user_bids') }}">Submitted bids</a>
+{% endblock %}
+
+{% block navbar_user_name %}
+     {{ current_user.name }}
+{% endblock %}
+
+{% block title %}
+    <title>Home</title>
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+{% endblock %}

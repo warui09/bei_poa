@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>User products</title>
+{% endblock %}
+
+{% block scripts %}
+<script src="../static/accept_bid.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="mx-auto" style="width: 90%">
+        {% for product in products %}
+        <div class="d-inline-block w-auto">
+            <div class="card m-1" style="width: 18rem;">
+                <img class="card-img-top" src={{ product.image_url }} alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.product_name }}</h5>
+                    <p class="card-text">Quantity: {{ product.quantity }} bags</p>
+                    <p class="card-text">Place: {{ product.place }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+	<ul class="list-group">
+	{% for bid in bids %}
+	<li class="list-group-item d-flex justify-content-between align-items-center">
+	    <div>
+		Bidder: {{ bid.bidder.first_name }}
+		Bid: {{ bid.price }} Ksh
+	    </div>
+	    <a href="#" class="btn btn-primary accept-bid active">Accept bid</a>
+	</li>
+	{% endfor %}
+	</ul>
+    </div>
+{% endblock %}
